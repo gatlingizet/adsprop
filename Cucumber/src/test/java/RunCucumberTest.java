@@ -8,7 +8,7 @@ import org.junit.runner.RunWith;
         (plugin = {"pretty", "json:target/cucumber.json"},
                 features = "src/test/resources/youtubeFeatures",
                 glue = {"youtubeDef"}
-//                , tags = {"@"}
+                , tags = {"@ss"}
         )
 
 public class RunCucumberTest {
