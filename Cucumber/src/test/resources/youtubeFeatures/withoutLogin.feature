@@ -24,7 +24,7 @@ Feature: YouTube Search without login
     When enter to search bar " "
     When press Enter
     Then can see start page
-@ss
+
   Scenario: Try to sub to channel without login
     Given browser with opened YouTube site
     When enter to search bar "heisenbug"

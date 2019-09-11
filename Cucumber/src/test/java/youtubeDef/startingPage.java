@@ -10,6 +10,10 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.chrome.ChromeOptions;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
@@ -36,6 +40,10 @@ public class startingPage {
 
     @Given("^browser with opened YouTube site")
     public void browserWithOpenedYouTubeSiteByLink() throws Throwable {
+        Map<String, Object> prefs = new HashMap<String, Object>();
+        prefs.put("profile.default_content_setting_values.notifications", 2);
+        ChromeOptions options = new ChromeOptions();
+        options.setExperimentalOption("prefs", prefs);
         Configuration.headless = Boolean.parseBoolean(getDataProperties("headless"));
         open(getDataProperties("link"));
 
@@ -46,11 +54,6 @@ public class startingPage {
         $("#buttons > ytd-button-renderer > a").click();
     }
 
-    @Then("^can see google form with login name$")
-    public void canSeeGoogleFormWithLoginName() {
-
-
-    }
 
     @Then("^can see google form with login name and text \"([^\"]*)\"$")
     public void canSeeGoogleFormWithLoginNameAndText(String arg0) {
@@ -59,7 +62,8 @@ public class startingPage {
     }
 
     @When("^enter to search bar \"([^\"]*)\"$")
-    public void enterToSearchBar(String arg0) throws Throwable {
+    public void enterToSearchBar(String arg0) {
+        $(By.xpath("//*[@id='search']/form/div/div/input")).sendKeys(Keys.ESCAPE);
         $(By.xpath("//*[@id='search']/form/div/div/input")).setValue(arg0);
     }
 
@@ -90,8 +94,37 @@ public class startingPage {
 
     @When("^press \"([^\"]*)\" button$")
     public void pressButton(String arg0) throws Throwable {
-        $(By.xpath("//*[@class='style-scope ytd-button-renderer style-destructive size-default']/yt-formatted-string")).waitUntil(text(arg0),5000);
+        $$(By.xpath("//*[@id='subscribe-button']/ytd-button-renderer/a")).get(4).waitUntil(text(arg0),5000);
         Thread.sleep(1000);
-        $$(By.xpath("//*[@class='style-scope ytd-button-renderer style-destructive size-default']")).get(25).click();
+        $$(By.xpath("//*[@id='subscribe-button']/ytd-button-renderer/a")).get(4).click();
+    }
+
+    @Then("^can see login image$")
+    public void canSeeLoginImage() {
+        $(By.xpath("//*[@class='style-scope ytd-topbar-menu-button-renderer no-transition']")).waitUntil(visible,3000);
+    }
+
+    @Then("^Button should change name to \"([^\"]*)\"$")
+    public void buttonShouldChangeNameTo(String arg0) throws Throwable {
+        $(By.xpath("//*[@aria-label='Unsubscribe from Heisenbug.']/yt-formatted-string")).shouldHave(text(arg0));
+    }
+
+    @When("^press \"([^\"]*)\" button as logined user$")
+    public void pressButtonAsLoginedUser(String arg0) throws Throwable {
+        $(By.xpath("//*[@aria-label='Subscribe to Heisenbug.']")).waitUntil(text(arg0),5000);
+        Thread.sleep(1000);
+        $(By.xpath("//*[@aria-label='Subscribe to Heisenbug.']")).click();
+        //*[@aria-label='Subscribe to Heisenbug.']
+    }
+
+    @When("^press this button again$")
+    public void pressThisButtonAgain() {
+        $(By.xpath("//*[@aria-label='Unsubscribe from Heisenbug.']")).click();
+        $(By.xpath("//*[@class='style-scope yt-button-renderer style-blue-text size-default']")).click();
+    }
+
+    @Then("^can see button with \"([^\"]*)\"$")
+    public void canSeeButtonWith(String arg0) throws Throwable {
+        $(By.xpath("//*[@aria-label='Subscribe to Heisenbug.']")).waitUntil(text(arg0),5000);
     }
 }
