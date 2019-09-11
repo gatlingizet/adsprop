@@ -72,7 +72,7 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <projectName>For propellers</projectName>
+                            <projectName>For propellers Youtube</projectName>
                             <outputDirectory>target/cucumber-html-reports</outputDirectory>
                             <cucumberOutput>target/cucumber.json</cucumberOutput>
                             <parallelTesting>false</parallelTesting>
